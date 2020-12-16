@@ -16,28 +16,28 @@ export default {
     lineHeight: '32px'
   },
   h3: {
-    color: palette.text.primary,
+    color: "#131E55",
     fontWeight: 500,
     fontSize: '24px',
     letterSpacing: '-0.06px',
     lineHeight: '28px'
   },
   h4: {
-    color: palette.text.primary,
+    color: "#131E55",
     fontWeight: 500,
     fontSize: '20px',
     letterSpacing: '-0.06px',
     lineHeight: '24px'
   },
   h5: {
-    color: palette.text.primary,
+    color: "#131E55",
     fontWeight: 500,
     fontSize: '16px',
     letterSpacing: '-0.05px',
     lineHeight: '20px'
   },
   h6: {
-    color: palette.text.primary,
+    color: "#131E55",
     fontWeight: 500,
     fontSize: '14px',
     letterSpacing: '-0.05px',
@@ -58,9 +58,10 @@ export default {
   },
   body1: {
     color: palette.text.primary,
-    fontSize: '14px',
+    fontSize: '12px',
     letterSpacing: '-0.05px',
-    lineHeight: '21px'
+    lineHeight: '21px',
+    fontWeight: "bold"
   },
   body2: {
     color: palette.text.secondary,

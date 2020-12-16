@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import ReactDOM from 'react-dom';
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import {Container, Grid, Typography} from "@material-ui/core";
@@ -7,10 +7,10 @@ import Divider from "@material-ui/core/Divider";
 import Box from "@material-ui/core/Box";
 import TextField from "@material-ui/core/TextField";
 import Paper from "@material-ui/core/Paper";
-import Card from "@material-ui/core/Card";
-import CardHeader from "@material-ui/core/CardHeader";
 import MenuItem from "@material-ui/core/MenuItem";
-import {Line} from "react-chartjs-2";
+import Icon from "@material-ui/core/Icon";
+import AnnualData from "./AnnualData";
+import {locations} from "./datas";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -44,184 +44,51 @@ const useStyles = makeStyles((theme) => ({
         marginTop: 6,
         marginBottom: 8,
         color: "red"
+    },
+    mapS: {
+        overflow: "auto",
+        marginBottom: theme.spacing(2)
     }
 
 }));
 
-function App() {
+function App({selected}) {
     const classes = useStyles();
 
-    const [techMoney, setTechMoney] = useState(0);
-    const [bioMoney, setBioMoney] = useState(0);
-    const [techArea, setTechArea] = useState(0);
-    const [bioArea, setBioArea] = useState(0);
     const [year, setYear] = useState(2019);
+    const [location, setLocation] = useState(selected);
 
-    const techData = [
-        {
-            year: 2015,
-            brokenAre: 0,
-            recoveredArea: 9.09333333333333,
-            money: 53604951.1166667
-        },
-        {
-            year: 2016,
-            brokenAre: 21.2709677419355,
-            recoveredArea: 8.20903225806452,
-            money: 33418241.0322581
-        },
-        {
-            year: 2017,
-            brokenAre: 5.75861111111111,
-            recoveredArea: 6.75277777777778,
-            money: 47228472.0486111
-        },
-        {
-            year: 2018,
-            brokenAre: 9.9054,
-            recoveredArea: 6.8272,
-            money: 21241695.3674
-        },
-        {
-            year: 2019,
-            brokenAre: 5.20048780487805,
-            recoveredArea: 7.50926829268293,
-            money: 98302965.0229268
-        },
 
-    ]
-
-    const bioData = [
-        {
-            year: 2015,
-            brokenAre: 0,
-            recoveredArea: 10.5361111111111,
-            money: 39350517.4944444
-        },
-        {
-            year: 2016,
-            brokenAre: 46.4357142857143,
-            recoveredArea: 6.77857142857143,
-            money: 144325302.683929
-        },
-        {
-            year: 2017,
-            brokenAre: 7.81746031746032,
-            recoveredArea: 7.59349206349207,
-            money: 142781414.492381
-        },
-        {
-            year: 2018,
-            brokenAre: 12.9729411764706,
-            recoveredArea: 12.0619117647059,
-            money: 72358688.6948529
-        },
-        {
-            year: 2019,
-            brokenAre: 5.65842105263158,
-            recoveredArea: 7.375,
-            money: 58494886.0515789
-        },
-
-    ]
+    const handleClickLocation = (e) => {
+        setLocation(e.target.id);
+    }
 
     return (
         <div className={classes.root}>
-            <Container maxWidth={"lg"}>
+            <Container maxWidth={"xl"}>
             <Grid container spacing={4}>
                 <Grid item xs={12} md={6}>
-                    <GoogleMap/>
+                    <GoogleMap classes={classes} onClick={handleClickLocation}/>
+                    {location !== null && <OverAll classes={classes} locations={locations} location={location}/>}
                 </Grid>
                 <Grid item xs={12} md={6}>
-                    <Typography variant="body2" className={classes.content}><Box fontWeight={"bold"}>"Jot" багын бүтээл</Box></Typography>
-                    <Typography variant="h4" className={classes.header}>Алт олборлолтын нөхөн сэргээлт</Typography>
-                    <Typography variant="h6" className={classes.subHeader}>Өгөгдөл</Typography>
-                    <Divider/>
-                    <Grid container className={classes.subHeader} spacing={1}>
-                        <Grid item xs={6}>
-                            <Paper className={classes.paper} elevation={0}>
-                                <Typography variant={"body2"}>Техникийн нөхөн сэргээлт</Typography>
-                                <TextField fullWidth type="number" label="Мөнгөн дүн(төг)" variant="outlined" margin="dense"
-                                           value={techMoney} onChange={(e) => setTechMoney(e.target.value)} />
-                                <TextField fullWidth type="number" label="Талбай(га)" variant="outlined" margin="dense"
-                                           value={techArea} onChange={(e) => setTechArea(e.target.value)} />
-                            </Paper>
-                        </Grid>
-                        <Grid item xs={6}>
-                            <Paper className={classes.paper} elevation={0}>
-                                <Typography variant={"body2"}>Биологийн нөхөн сэргээлт</Typography>
-                                <TextField fullWidth type="number" label="Мөнгөн дүн(төг)" variant="outlined" margin="dense"
-                                           value={bioMoney} onChange={(e) => setBioMoney(e.target.value)} />
-                                <TextField fullWidth type="number" label="Талбай(га)" variant="outlined" margin="dense"
-                                           value={bioArea} onChange={(e) => setBioArea(e.target.value)} />
-                            </Paper>
-                        </Grid>
-                    </Grid>
-
                     <Grid container justify={"space-between"} alignItems="center">
                         <Grid item>
-                            <Typography variant="h6" className={classes.subHeader}>Харьцуулалт</Typography>
+                    <Typography variant="body2" className={classes.content}><Box fontWeight={"bold"}>Аймаг</Box></Typography>
+                    <Typography variant="h4" className={classes.header}>{location} ({location !== null
+                    && numberWithCommas(locations.find(e => e.location === location).locationArea)} га)</Typography>
                         </Grid>
                         <Grid item>
-                            <TextField select label="Он" variant="outlined" margin="dense" value={year} onChange={(e) => setYear(e.target.value)}>
-                                <MenuItem value={2015}>2015</MenuItem>
-                                <MenuItem value={2016}>2016</MenuItem>
-                                <MenuItem value={2017}>2017</MenuItem>
-                                <MenuItem value={2018}>2018</MenuItem>
-                                <MenuItem value={2019}>2019</MenuItem>
-                            </TextField>
+                        <TextField select label="Он" variant="outlined" value={year} onChange={(e) => setYear(e.target.value)}>
+                            <MenuItem value={2015}>2015</MenuItem>
+                            <MenuItem value={2016}>2016</MenuItem>
+                            <MenuItem value={2017}>2017</MenuItem>
+                            <MenuItem value={2018}>2018</MenuItem>
+                            <MenuItem value={2019}>2019</MenuItem>
+                        </TextField>
                         </Grid>
                     </Grid>
-
-                    <Divider/>
-                    <Grid container className={classes.subHeader} spacing={1}>
-                        <Grid item xs={6}>
-                            <Paper className={classes.paper} elevation={0}>
-                                <Typography variant={"body2"}>Техникийн нөхөн сэргээлт</Typography>
-                                <Compare classes={classes} number={techMoney/techArea} data={techData.find(e => e.year === year)}/>
-                            </Paper>
-                        </Grid>
-                        <Grid item xs={6}>
-                            <Paper className={classes.paper} elevation={0}>
-                                <Typography variant={"body2"}>Биологийн нөхөн сэргээлт</Typography>
-                                <Compare classes={classes} number={bioMoney/bioArea} data={bioData.find(e => e.year === year)}/>
-                            </Paper>
-                        </Grid>
-                    </Grid>
-                    <Paper className={classes.paper} elevation={0}>
-                        <Typography variant={"body2"}>Хугацааны график</Typography>
-                        <Line data={{
-                            labels: bioData.map(value => value.year),
-                            datasets: [{
-                                label: 'Техникийн нөхөн сэргээлт',
-                                backgroundColor: "#000000",
-                                borderColor: "#000000",
-                                data: techData.map(e => e.money/e.recoveredArea),
-                                fill: false,
-                            },
-                                {
-                                    label: 'Биологи',
-                                    backgroundColor: "#B2DF8A",
-                                    borderColor: "#B2DF8A",
-                                    data: bioData.map(e => e.money/e.recoveredArea),
-                                    fill: false,
-                                },
-                                {
-                                    label: 'Утга(биологи)',
-                                    backgroundColor: "#A6CEE3",
-                                    borderColor: "#A6CEE3",
-                                    data: bioData.map(e => bioMoney/bioArea),
-                                    fill: false,
-                                },
-                                {
-                                    label: 'Утга(техник)',
-                                    backgroundColor: "#1F78B4",
-                                    borderColor: "#1F78B4",
-                                    data: bioData.map(e => techMoney/techArea),
-                                    fill: false,
-                                },]
-                        }}/>
-                    </Paper>
+                    {location !== null && <AnnualData classes={classes} location={location} locations={locations} year={year}/>}
                 </Grid>
             </Grid>
             </Container>
@@ -229,19 +96,81 @@ function App() {
     );
 }
 
-function Compare({number, data, classes}) {
-    const avg = data.money/data.recoveredArea;
-    const diff =  number - avg;
-    const percent = (diff/avg*100);
+
+function OverAll({locations, location, classes}) {
+    const data = locations.find((e) => e.location == location);
     return (
         <>
-            <Typography variant={"h4"} className={percent < 0 ? classes.avgNo : classes.avgYes}>{numberWithCommas((number).toFixed(0))}₮/га
-                &nbsp;{percent.toFixed(2)}%
-            </Typography>
-            <Typography variant={"body1"}>{numberWithCommas(avg.toFixed(0))}₮/га(дундаж)</Typography>
+            <Typography variant="h6" className={classes.subHeader}>Ерөнхий мэдээлэл</Typography>
+            <Divider/>
+            <Grid container spacing={2} className={classes.subHeader}>
+                <Grid item xs={6}>
+                    <Paper className={classes.paper} elevation={0}>
+                        <Grid container justify="space-between" alignItems="center">
+                            <Grid item>
+                                <Icon>
+                                    <img  src={process.env.PUBLIC_URL + "/mine.svg"}/>
+                                </Icon>
+                            </Grid>
+                            <Grid item>
+                                <Typography variant="h6">Уурхайн төслийн тоо</Typography>
+                                <Typography variant="h2" align="right">{data.quantity}</Typography>
+                            </Grid>
+                        </Grid>
+                        <Grid container justify="space-between" alignItems="center">
+                            <Grid item>
+                                <Typography variant={"body2"}>Уурхайн эдэлбэр /га/</Typography>
+                            </Grid>
+                            <Grid item>
+                                <Typography variant={"body2"}>{data.area}</Typography>
+                            </Grid>
+                        </Grid>
+                        <Grid container justify="space-between" alignItems="center">
+                            <Grid item>
+                                <Typography variant={"body2"}>Тайлант онд нөхөн сэргээлт хийх талбай /га/ </Typography>
+                            </Grid>
+                            <Grid item>
+                                <Typography variant={"body2"}>{data.recovery}</Typography>
+                            </Grid>
+                        </Grid>
+                    </Paper>
+                </Grid>
+                <Grid item xs={6}>
+                    <Paper className={classes.paper} elevation={0}>
+                        <Grid container justify="space-between" alignItems="center">
+                            <Grid item xs={4}>
+                                <Icon>
+                                    <img src={process.env.PUBLIC_URL + "/coal.svg"} style={{padding: 5, width: 64, height: 64}}/>
+                                </Icon>
+                            </Grid>
+                            <Grid item xs={8}>
+                                <Typography variant="h6">Хамгийн их олборлосон бүтээгдэхүүн</Typography>
+                                <Typography variant="h4" align="right">{data.mineral}</Typography>
+                            </Grid>
+                        </Grid>
+                        <Grid container justify="space-between" alignItems="center">
+                            <Grid item>
+                                <Typography variant={"body2"}>Нийт борлуулалт({data.measurement})</Typography>
+                            </Grid>
+                            <Grid item>
+                                <Typography variant={"body2"}>{data.soldQuantity}</Typography>
+                            </Grid>
+                        </Grid>
+                        <Grid container justify="space-between" alignItems="center">
+                            <Grid item>
+                                <Typography variant={"body2"}>Нийт борлуулалт(сая/төг) </Typography>
+                            </Grid>
+                            <Grid item>
+                                <Typography variant={"body2"}>{data.sold}</Typography>
+                            </Grid>
+                        </Grid>
+                    </Paper>
+                </Grid>
+            </Grid>
         </>
     );
 }
+
 
 function numberWithCommas(x) {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
