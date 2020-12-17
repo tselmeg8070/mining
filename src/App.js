@@ -55,7 +55,7 @@ const useStyles = makeStyles((theme) => ({
 function App({selected}) {
     const classes = useStyles();
 
-    const [year, setYear] = useState(2019);
+    const [year, setYear] = useState(2018);
     const [location, setLocation] = useState(selected);
 
 
