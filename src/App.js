@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import ReactDOM from 'react-dom';
 import makeStyles from "@material-ui/core/styles/makeStyles";
-import {Container, Grid, Typography} from "@material-ui/core";
+import {Button, Container, Grid, Typography} from "@material-ui/core";
 import GoogleMap from "./Map";
 import Divider from "@material-ui/core/Divider";
 import Box from "@material-ui/core/Box";
@@ -52,7 +52,7 @@ const useStyles = makeStyles((theme) => ({
 
 }));
 
-function App({selected}) {
+function App({selected, onClickBack}) {
     const classes = useStyles();
 
     const [year, setYear] = useState(2018);
@@ -68,6 +68,7 @@ function App({selected}) {
             <Container maxWidth={"xl"}>
             <Grid container spacing={4}>
                 <Grid item xs={12} md={6}>
+                    <Button onClick={onClickBack}> Буцах </Button>
                     <GoogleMap classes={classes} onClick={handleClickLocation}/>
                     {location !== null && <OverAll classes={classes} locations={locations} location={location}/>}
                 </Grid>

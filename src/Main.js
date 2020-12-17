@@ -43,7 +43,7 @@ function Main() {
 
     return (
         <div className={classes.root}>
-            {selected !== null ? <App selected={selected}/> :
+            {selected !== null ? <App selected={selected} onClickBack={() => setSelected(null)}/> :
             <Container maxWidth={"lg"}>
                 <Typography variant="body2">"OP insight" team</Typography>
                 <Typography variant="h3">Алт олборлолт ба түүний байгаль орчин болон нийгэм эдийн засагт нөлөөлөх нөлөө</Typography>
@@ -194,6 +194,52 @@ function Main() {
                 </Grid>
                 <Typography variant="h5" className={classes.header}>Жиргээ</Typography>
                 <Divider className={classes.divider}/>
+                <Grid container spacing={3}>
+                    <Grid item xs={12} md={6}>
+                        <Paper elevation={0} className={classes.paper}>
+                            <Pie data={{
+                                labels: ["Эерэг", "Сөрөг"],
+                                datasets: [
+                                    {
+                                        label: '',
+                                        backgroundColor: ["#B2DF8A", "#4BC0C0"],
+                                        borderColor:  ["#B2DF8A", "#4BC0C0"],
+                                        data: [863, 1547-863],
+                                        fill: false,
+                                    },
+                                ]
+                            }}/>
+                            <Typography variant={"body1"} align="center">Нийт жиргээнүүд</Typography>
+                            <Typography variant={"h5"} align="center">{1547}</Typography>
+                        </Paper>
+                    </Grid>
+                    <Grid item xs={12} md={6}>
+                        <Paper className={classes.paper}>
+                            <Typography variant={"body1"}>Давтамж</Typography>
+
+                            <Line data={{
+                                labels: [1,2,3,4,5,6,7,8,10,11,12],
+                                datasets: [{
+                                    label: 'Сөрөг',
+                                    backgroundColor: "#000000",
+                                    borderColor: "#000000",
+                                    data: [43, 189, 186, 225, 235, 289, 30, 305, 308, 350, 353, 389],
+                                    fill: false,
+                                },
+                                    {
+                                        label: 'Эерэг',
+                                        backgroundColor: "#B2DF8A",
+                                        borderColor: "#B2DF8A",
+                                        data: [135, 153, 34, 194, 211, 13, 266, 54, 306, 378, 408, 428],
+                                        fill: false,
+                                    },
+                                ]
+                            }}/>
+                        </Paper>
+                    </Grid>
+                </Grid>
+
+
                 <img src={process.env.PUBLIC_URL + "/flat.png"} style={{width: "100%", borderRadius: 12}}/>
             </Container>}
         </div>
